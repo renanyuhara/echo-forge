@@ -26,3 +26,30 @@ If a single candidate wins, we will test a three-part emotional speech using the
 Official package docs: https://github.com/supertone-oss-archive/supertonic-py/blob/main/docs/quickstart.md
 Upstream model: https://huggingface.co/Supertone/supertonic
 Check model license before shipping model assets or using generated audio commercially. The open-source project and its licensing should be evaluated separately.
+
+
+## F1 vs F5 — Three moments of Orfina's vows
+
+The user approved **F1 and F5** as the two strongest candidates in the first listening test. This new experiment renders both across the **same three provisional texts** and **identical speed per scene**, so the timbre can be compared fairly. These are example texts, not canonical final vows.
+
+From `C:\projects\echo-forge` in PowerShell, on this PR's branch:
+
+```powershell
+git pull
+.\.venv-supertonic\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv-supertonic\Scripts\python.exe poc/supertonic_vows.py --dry-run
+.\.venv-supertonic\Scripts\python.exe poc/supertonic_vows.py
+explorer .\outputs\supertonic-vows
+```
+
+The six output files are:
+- `outputs/supertonic-vows/f1/01-opening.wav`
+- `outputs/supertonic-vows/f1/02-intimate.wav`
+- `outputs/supertonic-vows/f1/03-finale.wav`
+- `outputs/supertonic-vows/f5/01-opening.wav`
+- `outputs/supertonic-vows/f5/02-intimate.wav`
+- `outputs/supertonic-vows/f5/03-finale.wav`
+
+Scenes use the **same relative speeds** as the earlier Kokoro experiment: opening `1.08`, intimate `1.03`, finale `0.98`. These numeric speed settings are a starting hypothesis, not guaranteed to have identical effects across engines. Supertonic does not guarantee controllable crying or emotional expression. Listen for a voice that stays **soft, delicate, adult but not old**, naturally Brazilian and believable in all three moments.
+
+No extra packages or recorded voice samples are required after the first Supertonic evaluation.
