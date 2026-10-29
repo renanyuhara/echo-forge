@@ -4,7 +4,7 @@ This is **an experimental command-line script, not the EchoForge app**. It uses 
 
 ## Target and limitations
 
-- Windows 11 with WSL2 Ubuntu, NVIDIA RTX 2080 SUPER (8 GiB).
+- Windows 11 native PowerShell (primary), NVIDIA RTX 2080 SUPER (8 GiB). WSL2 Ubuntu is optional.
 - Python 3.12 recommended by upstream Qwen3-TTS.
 - Start with the 0.6B **CustomVoice** checkpoint for preset-voice synthesis.
 - The model advertises Portuguese but **Brazilian pronunciation must be judged by listening**.
@@ -12,20 +12,26 @@ This is **an experimental command-line script, not the EchoForge app**. It uses 
 - Do not install FlashAttention-2: Turing / compute capability 7.5 is not its supported target. The script requests PyTorch SDPA, and uses float16 for CUDA.
 - The model may exceed available memory or require compatible PyTorch/transformers versions. Treat a failure as evidence for model selection, not a reason to disable safety checks.
 
-## Setup in WSL2
+## Setup in Windows 11 PowerShell (preferred)
 
-```bash
+Install **Python 3.12 (64-bit)** from python.org if `py -3.12 --version` does not work. In PowerShell, from the repo directory:
+
+```powershell
 nvidia-smi
-sudo apt update
-sudo apt install -y python3.12 python3.12-venv libsndfile1
-python3.12 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-# Install a CUDA-enabled PyTorch build suitable for your driver;
-# consult https://pytorch.org/get-started/locally/ for the current command.
-python -m pip install qwen-tts soundfile
-python poc/diagnose.py
+py -3.12 --version
+py -3.12 -m venv .venv
+.\\.venv\\Scripts\\python.exe -m pip install --upgrade pip
+# IMPORTANT: install the CUDA-enabled PyTorch Windows build from
+# https://pytorch.org/get-started/locally/ before the next command.
+.\\.venv\\Scripts\\python.exe -m pip install qwen-tts soundfile
+.\\.venv\\Scripts\\python.exe poc/diagnose.py
 ```
+
+A Python virtual environment is isolated from the system installation. Using its executable avoids PowerShell execution-policy issues. The PyTorch installation command depends on supported CUDA wheels and NVIDIA driver. **Check `cuda_available: true`** before downloading weights. Qwen3-TTS's SoX dependency may require extra native Windows setup; troubleshoot based on the actual import/runtime error instead of installing unrelated tools in advance.
+
+## Alternative: WSL2 Ubuntu
+
+Optional for dependency compatibility. Install a real Ubuntu distribution first; the Docker Desktop internal `docker-desktop` WSL distribution is **not** a development Ubuntu environment. Then use a Python 3.12 venv and an appropriate CUDA-enabled PyTorch wheel under Linux.
 
 **Verify** that `cuda_available` is true and GPU is NVIDIA RTX 2080 SUPER before continuing. The actual CUDA PyTorch wheel must match your setup; the command above deliberately avoids pinning an unverified wheel URL.
 
@@ -49,7 +55,7 @@ The first generation downloads weights from Hugging Face. Subsequent inference i
 ## Measure and report
 
 Copy the JSON statistics printed after generation and note:
-- GPU / CUDA / torch versions, WSL distribution and Python version.
+- GPU / CUDA / torch versions, operating system and Python version.
 - Success/failure and full diagnostic traceback (remove private paths if needed).
 - Peak allocated GPU memory (not total VRAM usage), latency, sample duration.
 - Listening results for **pt-BR accent, intelligibility, naturalness and expressiveness**.
