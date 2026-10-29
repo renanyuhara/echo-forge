@@ -17,9 +17,11 @@ class ComparePtBrTests(unittest.TestCase):
         self.assertTrue(cmds[1][-1].endswith("ptbr-vivian.wav"))
         self.assertIn("float32", cmds[0])
 
-    def test_dry_run_requires_script_file(self):
+    def test_dry_run_without_model_loading(self):
         with tempfile.TemporaryDirectory() as folder:
-            self.assertEqual(module.main(["--text-file", str(Path(folder) / "missing.txt"), "--dry-run"]) if False else 0, 0)
+            text_file = Path(folder) / "text.txt"
+            text_file.write_text("Olá, Astel!", encoding="utf-8")
+            self.assertEqual(module.main(["--text-file", str(text_file), "--dry-run"]), 0)
 
 if __name__ == "__main__":
     unittest.main()
