@@ -62,7 +62,7 @@ def main() -> None:
         return
     if not speakers:
         raise SystemExit("Model returned no preset speakers; use a CustomVoice checkpoint.")
-    speaker = args.speaker or speakers[0]
+    speaker = args.speaker or ("serena" if "serena" in speakers else speakers[0])
     if speaker not in speakers:
         raise SystemExit(f"Unknown speaker {speaker!r}. Choose one of: {', '.join(speakers)}")
     if args.device == "cuda":
