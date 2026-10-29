@@ -32,12 +32,15 @@ The first invocation downloads a potentially large third-party image. This image
 From `C:\projects\echo-forge`, on the PR #3 branch:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install --upgrade huggingface_hub
+.\.venv\Scripts\python.exe -m pip install "huggingface_hub==0.36.2"
+.\.venv\Scripts\python.exe -m pip check
 .\.venv\Scripts\hf.exe download Serveurperso/Qwen3-TTS-GGUF `
   qwen-talker-1.7b-voicedesign-Q8_0.gguf `
   qwen-tokenizer-12hz-Q8_0.gguf `
   --local-dir models
 ```
+
+Do not run an unbounded `--upgrade huggingface_hub` in the same environment as Qwen3-TTS: current 2.x releases may conflict with transformers/gradio. If you already upgraded, restore `huggingface_hub==0.36.2` and run `pip check` first.
 
 Files: [Hugging Face model repository](https://huggingface.co/Serveurperso/Qwen3-TTS-GGUF/tree/main). These Q8 files are approximately **2.04 GB + 291 MB on disk**. File size is *not* peak VRAM. Do not download the entire repository. The `models/` directory is Git-ignored.
 
