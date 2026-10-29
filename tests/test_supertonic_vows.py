@@ -16,7 +16,7 @@ class SupertonicVowsTests(unittest.TestCase):
             self.assertEqual(len(jobs), 6)
             self.assertEqual(len({str(job[4]) for job in jobs}), 6)
             self.assertEqual([job[0] for job in jobs], ["F1"] * 3 + ["F5"] * 3)
-            self.assertEqual([job[3] for job in jobs], [1.08, 1.03, 0.98] * 2)
+            self.assertEqual([job[3] for job in jobs], [1.00, 0.96, 0.92] * 2)
 
     def test_no_generation_in_dry_run(self):
         self.assertEqual(module.main(["--dry-run"]), 0)
