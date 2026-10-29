@@ -24,6 +24,7 @@ Create **Orfina's wedding vows to Astel** in Brazilian Portuguese, select and sa
 ## Documentation
 
 - [Product specification, acceptance criteria and roadmap](docs/PRODUCT_SPEC.md)
+- [VoiceDesign GGUF Docker proof of concept (Windows with Linux CUDA container)](docs/VOICE_DESIGN_POC.md)
 
 ## Development approach
 
