@@ -9,9 +9,9 @@ import time
 from pathlib import Path
 
 SCENES = (
-    ("01-opening", "examples/orfina-vows-opening.txt", 1.08),
-    ("02-intimate", "examples/orfina-vows-intimate.txt", 1.03),
-    ("03-finale", "examples/orfina-vows-finale.txt", 0.98),
+    ("01-opening", "examples/orfina-vows-opening.txt", 1.00),
+    ("02-intimate", "examples/orfina-vows-intimate.txt", 0.96),
+    ("03-finale", "examples/orfina-vows-finale.txt", 0.92),
 )
 VOICES = ("F1", "F5")
 
@@ -26,7 +26,7 @@ def plan(output_dir: Path, voices=VOICES):
 
 def main(argv=None):
     p = argparse.ArgumentParser(description="Six WAVs: F1 and F5 in three vows scenes")
-    p.add_argument("--output-dir", type=Path, default=Path("outputs/supertonic-vows"))
+    p.add_argument("--output-dir", type=Path, default=Path("outputs/supertonic-vows-slower"))
     p.add_argument("--voices", nargs="+", choices=VOICES, default=list(VOICES))
     p.add_argument("--steps", type=int, default=8)
     p.add_argument("--dry-run", action="store_true")
