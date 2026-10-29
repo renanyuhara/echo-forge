@@ -85,3 +85,17 @@ Q4 files total roughly 1.43 GB **on disk**, not necessarily in GPU memory. Compa
 - The quantized VoiceDesign route and its latency, quality and VRAM consumption **require a real on-machine test**.
 - Docker can keep some GPU memory occupied while running; it does not bypass the shared hardware limit.
 - No additional Ubuntu installation, new NVIDIA driver or FlashAttention installation is required for this proposed path.
+
+## First confirmed hardware result — 2026-10-29
+
+User-reported successful **Windows 11 + Docker Desktop Linux CUDA** inference on NVIDIA RTX 2080 SUPER, 8 GiB, CUDA compute capability 7.5, using the **Q8 VoiceDesign 1.7B talker and tokenizer**.
+
+- Short input: `Astel, ao seu lado, até os dias mais difíceis encontram um pouco de luz.`
+- Execution: `poc/voice_design.py --text-file examples/orfina-voicedesign-short.txt --output outputs/orfina-voicedesign-q8.wav --quant q8`
+- Q8 pipeline initialized successfully; GGUF weights, tokenizer, and 896 MB KV cache loaded.
+- Output: `outputs/orfina-voicedesign-q8.wav`; mono S16, 24 kHz, 138240 samples, **5.76 seconds**.
+- Performance: **40.36 seconds total**, real-time factor **7.007**, first audio frame at 33.56 seconds.
+- No OOM or CUDA failure observed. **Peak VRAM was not recorded**, so success does not establish the maximum headroom for longer prompts.
+- **No subjective evaluation of timbre, naturalness, emotion or Brazilian accent has been supplied yet.** Listen before deciding if the model suits Orfina.
+
+This proves that the Q8 VoiceDesign model can run on the target GPU for a short example, not that the sound is production-ready. Do not prematurely optimize or switch to Q4 without a reason.
