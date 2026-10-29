@@ -99,3 +99,7 @@ User-reported successful **Windows 11 + Docker Desktop Linux CUDA** inference on
 - **No subjective evaluation of timbre, naturalness, emotion or Brazilian accent has been supplied yet.** Listen before deciding if the model suits Orfina.
 
 This proves that the Q8 VoiceDesign model can run on the target GPU for a short example, not that the sound is production-ready. Do not prematurely optimize or switch to Q4 without a reason.
+
+## Listening evaluation
+
+The user listened to the generated Q8 Orfina sample and reported a conspicuous **foreign accent**, describing it as someone who speaks another language attempting Portuguese. Therefore this experiment **passes technical feasibility but fails the desired native Brazilian Portuguese pronunciation criterion**. Do not treat it as the approved Orfina voice. Next milestone: evaluate consented, native pt-BR reference-voice cloning in a separate spike.
