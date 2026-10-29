@@ -14,3 +14,6 @@ checkpoints/
 .env
 .env.*
 !.env.example
+
+# Local voice cloning references, transcripts and consent metadata
+references/
