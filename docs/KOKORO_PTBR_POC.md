@@ -36,3 +36,28 @@ Listen for native Brazilian pronunciation, warmth, naturalness and age impressio
 References:
 - [Official Kokoro model card](https://huggingface.co/hexgrad/Kokoro-82M)
 - [Official Kokoro repository](https://github.com/hexgrad/kokoro)
+
+## Orfina vows: three-part emotional progression
+
+User listening review approved the `pf_dora` baseline at **speed 1.08** for the formal opening, while noting a slightly serious tone. This is a **voice/pacing experiment**, not a finalized canonical wedding speech. Example text is original, provisional, and should be replaced with the approved vows when ready.
+
+Generate three separate WAVs with one command from the repository root:
+
+```powershell
+git pull
+.\.venv-kokoro\Scripts\python.exe poc/kokoro_vows.py --dry-run
+.\.venv-kokoro\Scripts\python.exe poc/kokoro_vows.py
+```
+
+Outputs:
+
+| Part | Input | Speed | Expected mood |
+|---|---|---:|---|
+| 01-opening | `examples/orfina-vows-opening.txt` | 1.08 | Formal and composed (user-approved setting) |
+| 02-intimate | `examples/orfina-vows-intimate.txt` | 1.03 | Slower, affectionate and personal |
+| 03-finale | `examples/orfina-vows-finale.txt` | 0.98 | Slower, emotionally vulnerable |
+
+The same **`pf_dora`** synthetic voice is used throughout. Changes in speed/punctuation might convey pacing, but **Kokoro does not guarantee vocal trembling, crying, or emotional control**. Listen to each WAV independently; the script does not concatenate them or alter timbre. These speeds are hypotheses to compare, not artistically validated choices. Report if a slower section sounds older or more robotic.
+
+Run tests with `py -3.12 -m unittest discover -s tests -v`; these offline tests don't synthesize audio.
+
