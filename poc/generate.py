@@ -22,6 +22,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--language", default="Portuguese", help="Model language, not an accent guarantee.")
     parser.add_argument("--instruct", help="Optional delivery instruction (model support varies).")
     parser.add_argument("--device", choices=["cuda", "cpu"], default="cuda")
+    parser.add_argument("--dtype", choices=["float32", "float16", "bfloat16"], default="float32", help="Numerical precision. FP32 is recommended for pre-Ampere NVIDIA GPUs; FP16 may trigger a device-side assert.")
     parser.add_argument("--allow-cpu", action="store_true", help="Explicitly allow slower CPU processing.")
     return parser.parse_args()
 
@@ -43,7 +44,11 @@ def main() -> None:
     if not text and not args.list_speakers:
         raise SystemExit("No text provided.")
 
-    dtype = torch.float16 if args.device == "cuda" else torch.float32
+    dtype = getattr(torch, args.dtype)
+    if args.device == "cuda" and args.dtype == "float16":
+        print("WARNING: FP16 can trigger CUDA device-side assertions in Qwen3-TTS code predictor; prefer --dtype float32 on RTX 2080 SUPER.")
+    if args.device == "cuda" and args.dtype == "bfloat16" and not torch.cuda.is_bf16_supported():
+        raise SystemExit("This GPU does not support native bfloat16; use --dtype float32.")
     print(f"Loading {args.model} on {args.device} (dtype={dtype}); first run may download weights.")
     model = Qwen3TTSModel.from_pretrained(
         args.model,
@@ -74,7 +79,7 @@ def main() -> None:
     duration = round(len(wavs[0]) / sample_rate, 2)
     stats = {
         "model": args.model, "speaker": speaker, "language": args.language,
-        "device": args.device, "generation_seconds": elapsed,
+        "device": args.device, "dtype": args.dtype, "generation_seconds": elapsed,
         "audio_seconds": duration, "sample_rate": sample_rate,
         "peak_gpu_memory_mib": round(torch.cuda.max_memory_allocated() / 2**20, 1) if args.device == "cuda" else None,
         "output": str(args.output),
