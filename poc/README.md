@@ -70,3 +70,16 @@ Avoid uploading character samples or private scripts with an issue. The output a
 Upstream references:
 - https://github.com/QwenLM/Qwen3-TTS
 - https://huggingface.co/Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice
+
+## Validated Windows run (2026-10-29)
+
+User-reported successful inference on Windows 11, Python 3.12.10, PyTorch 2.11.0+cu128, RTX 2080 SUPER (8 GiB), compute capability 7.5, using `--dtype float32` and the `Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice` preset `aiden`:
+
+- Output: WAV, 24,000 Hz, 10.64 seconds.
+- Generation elapsed: 26.55 seconds (approximately 0.40x real time).
+- PyTorch peak GPU **allocated** memory: 4556.7 MiB (does not include all external GPU allocations).
+- No `device-side assert`; the previous `float16` run failed in the code predictor.
+- Missing `flash-attn` and `sox` warnings occurred, **but did not prevent generation**. Neither is required for this confirmed path; do not install flash-attn on Turing to silence a warning.
+- **Voice quality, Brazilian accent, and consistency not yet assessed.** The preset speaker is a test, not Orfina's finished voice.
+
+This is a manual user report, not a CI/GPU lab test. Re-run if dependencies or model checkpoints change.
